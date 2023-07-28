@@ -11,8 +11,8 @@ from mmengine.runner import Runner
 def parse_args():
     parser = argparse.ArgumentParser(
         description='MMSeg test (and eval) a model')
-    parser.add_argument('config', help='train config file path')
-    parser.add_argument('checkpoint', help='checkpoint file')
+    parser.add_argument('--config', help='train config file path')
+    parser.add_argument('--checkpoint', help='checkpoint file')
     parser.add_argument(
         '--work-dir',
         help=('if specified, the evaluation metric results will be dumped'
@@ -81,6 +81,9 @@ def trigger_visualization_hook(cfg, args):
 
 def main():
     args = parse_args()
+
+    args.config = r'local_configs\ddrnet\ddrnet_23-slim_in1k-pre_1xb12-40k_msd-832x832.py' 
+    args.checkpoint = r'work_dirs\ddrnet_23-slim_in1k-pre_1xb12-40k_msd-832x832\best_mIoU_iter_40000.pth'
 
     # load config
     cfg = Config.fromfile(args.config)
