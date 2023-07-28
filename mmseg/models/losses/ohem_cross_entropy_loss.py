@@ -51,6 +51,8 @@ class OhemCrossEntropy(nn.Module):
 
     def forward(self, score: Tensor, target: Tensor) -> Tensor:
         """Forward function.
+        每次训练至少保证有kept个元素用于训练，如果第kept的预测概率小于thr，那么就要选取所有小于thr的训练，
+        如果第kept的预测概率比thr大，那么就要选前kept的训练。
         Args:
             score (Tensor): Predictions of the segmentation head.
             target (Tensor): Ground truth of the image.

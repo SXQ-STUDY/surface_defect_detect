@@ -1,17 +1,15 @@
 _base_ = [
-    '../_base_/datasets/cityscapes_1024x1024.py',
+    '../_base_/datasets/msd.py',
     '../_base_/default_runtime.py',
 ]
 
 # The class_weight is borrowed from https://github.com/openseg-group/OCNet.pytorch/issues/14 # noqa
 # Licensed under the MIT License
 class_weight = [
-    0.8373, 0.918, 0.866, 1.0345, 1.0166, 0.9969, 0.9754, 1.0489, 0.8786,
-    1.0023, 0.9539, 0.9843, 1.1116, 0.9037, 1.0865, 1.0955, 1.0865, 1.1529,
-    1.0507
+    0.5, 1.0, 1.0, 1.0
 ]
 checkpoint = 'https://download.openmmlab.com/mmsegmentation/v0.5/ddrnet/pretrain/ddrnet23s-in1kpre_3rdparty-1ccac5b1.pth'  # noqa
-crop_size = (1024, 1024)
+crop_size = (832, 832)
 data_preprocessor = dict(
     type='SegDataPreProcessor',
     size=crop_size,
@@ -37,7 +35,7 @@ model = dict(
         in_channels=32 * 4,
         channels=64,
         dropout_ratio=0.,
-        num_classes=19,
+        num_classes=4,
         align_corners=False,
         norm_cfg=norm_cfg,
         loss_decode=[
@@ -59,9 +57,9 @@ model = dict(
     train_cfg=dict(),
     test_cfg=dict(mode='whole'))
 
-train_dataloader = dict(batch_size=6, num_workers=4)
+train_dataloader = dict(batch_size=12, num_workers=6)
 
-iters = 120000
+iters = 20000
 # optimizer
 optimizer = dict(type='SGD', lr=0.01, momentum=0.9, weight_decay=0.0005)
 optim_wrapper = dict(type='OptimWrapper', optimizer=optimizer, clip_grad=None)
@@ -76,7 +74,7 @@ param_scheduler = [
         by_epoch=False)
 ]
 
-# training schedule for 120k
+# training schedule for 20k
 train_cfg = dict(
     type='IterBasedTrainLoop', max_iters=iters, val_interval=iters // 10)
 val_cfg = dict(type='ValLoop')
@@ -86,7 +84,7 @@ default_hooks = dict(
     logger=dict(type='LoggerHook', interval=50, log_metric_by_epoch=False),
     param_scheduler=dict(type='ParamSchedulerHook'),
     checkpoint=dict(
-        type='CheckpointHook', by_epoch=False, interval=iters // 10),
+        type='CheckpointHook', by_epoch=False, save_best='mIoU'),
     sampler_seed=dict(type='DistSamplerSeedHook'),
     visualization=dict(type='SegVisualizationHook'))
 
