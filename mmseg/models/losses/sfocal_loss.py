@@ -75,10 +75,10 @@ def py_sigmoid_focal_loss2(pred,
     # one_minus_pt = 1 - gt_logits
     # 2 
     one_minus_pt = (1 - pred_sigmoid) * target + pred_sigmoid * (1 - target)
-
-    one_minus_pt = torch.exp(one_minus_pt) - 1
-    focal_weight = (alpha * target + (1 - alpha) *
-                    (1 - target)) * one_minus_pt
+ 
+    focal_weight = torch.exp(one_minus_pt) - 1
+    # focal_weight = (alpha * target + (1 - alpha) *
+    #                 (1 - target)) * focal_weight
 
     loss = F.binary_cross_entropy_with_logits(pred, target, reduction='none') 
     loss = loss * focal_weight

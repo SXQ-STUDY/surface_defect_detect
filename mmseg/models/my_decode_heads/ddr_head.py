@@ -1,6 +1,7 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 from typing import Tuple, Union
 
+import torch
 import torch.nn as nn
 from mmcv.cnn import ConvModule, build_activation_layer, build_norm_layer
 from torch import Tensor
@@ -89,12 +90,24 @@ class DDRHead_with_borderloss(BaseDecodeHead):
         ]
 
         return nn.Sequential(*layers)
+    
+    def _stack_batch_gt(self, batch_data_samples: SampleList) -> Tuple[Tensor]:
+        gt_semantic_segs = [
+            data_sample.gt_sem_seg.data for data_sample in batch_data_samples
+        ]
+        gt_edge_segs = [
+            data_sample.gt_edge_map.data for data_sample in batch_data_samples
+        ]
+        gt_sem_segs = torch.stack(gt_semantic_segs, dim=0)
+        gt_edge_segs = torch.stack(gt_edge_segs, dim=0)
+        return gt_sem_segs, gt_edge_segs
+
 
     def loss_by_feat(self, seg_logits: Tuple[Tensor],
                      batch_data_samples: SampleList) -> dict:
         loss = dict()
         context_logit, spatial_logit = seg_logits
-        seg_label = self._stack_batch_gt(batch_data_samples)
+        seg_label, edge_label = self._stack_batch_gt(batch_data_samples)
 
         context_logit = resize(
             context_logit,
@@ -107,9 +120,14 @@ class DDRHead_with_borderloss(BaseDecodeHead):
             mode='bilinear',
             align_corners=self.align_corners)
         seg_label = seg_label.squeeze(1)
+        edge_label = edge_label.squeeze(1)
+        filler = torch.ones_like(seg_label) * self.ignore_index
+        seg_edge_label = torch.where(edge_label==1, seg_label, filler)
 
         loss['loss_context'] = self.loss_decode[0](context_logit, seg_label)
         loss['loss_spatial'] = self.loss_decode[1](spatial_logit, seg_label)
+        loss['loss_context_seg_edge'] = self.loss_decode[2](context_logit, seg_edge_label)
+        loss['loss_spatial_seg_edge'] = self.loss_decode[3](spatial_logit, seg_edge_label)
         loss['acc_seg'] = accuracy(
             context_logit, seg_label, ignore_index=self.ignore_index)
 

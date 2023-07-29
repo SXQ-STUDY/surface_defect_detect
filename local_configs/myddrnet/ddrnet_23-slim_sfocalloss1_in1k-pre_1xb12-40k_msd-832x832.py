@@ -31,7 +31,7 @@ model = dict(
         align_corners=False,
         init_cfg=dict(type='Pretrained', checkpoint=checkpoint)),
     decode_head=dict(
-        type='DDRHead_with_borderloss',
+        type='DDRHead',
         in_channels=32 * 4,
         channels=64,
         dropout_ratio=0.,
@@ -54,8 +54,13 @@ model = dict(
             dict(
                 type='SFocalLoss',
                 use_sigmoid=True, 
-                exp_name='4',
-            )
+                exp_name='1',
+            ), 
+            dict(
+                type='SFocalLoss',
+                use_sigmoid=True, 
+                exp_name='1',
+            ), 
         ]),
 
     # model training and testing settings
