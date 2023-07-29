@@ -8,7 +8,10 @@ from .losses import *  # noqa: F401,F403
 from .necks import *  # noqa: F401,F403
 from .segmentors import *  # noqa: F401,F403
 
+from .my_backbones import *
+from .my_decode_heads import * 
+
 __all__ = [
     'BACKBONES', 'HEADS', 'LOSSES', 'SEGMENTORS', 'build_backbone',
-    'build_head', 'build_loss', 'build_segmentor', 'SegDataPreProcessor'
+    'build_head', 'build_loss', 'build_segmentor', 'SegDataPreProcessor', 
 ]

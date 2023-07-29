@@ -186,7 +186,6 @@ def py_sigmoid_focal_loss4(pred,
 
 @MODELS.register_module()
 class SFocalLoss(nn.Module):
-
     def __init__(self,
                  use_sigmoid=True,
                  gamma=0.5,
@@ -198,7 +197,6 @@ class SFocalLoss(nn.Module):
                  class_weight=None,
                  loss_weight=1.0,
                  loss_name='loss_sfocal'):
-        
         super().__init__()
         assert use_sigmoid is True, \
             'AssertionError: Only sigmoid focal loss supported now.'
