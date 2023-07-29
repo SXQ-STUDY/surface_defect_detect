@@ -181,39 +181,35 @@ class MyDDRNet(BaseModule):
     def forward(self, x):
         """Forward function."""
         out_size = (x.shape[-2] // 8, x.shape[-1] // 8)
-
-        # stage 0-2
-        x = self.stem(x)
-
-        # stage3
-        x_c = self.context_branch_layers[0](x)
-        x_s = self.spatial_branch_layers[0](x)
-        comp_c = self.compression_1(self.relu(x_c))
-        x_c += self.down_1(self.relu(x_s))
-        x_s += resize(
+        # stage 0-2 
+        x = self.stem(x) # b*64*1/8h*1/8w
+        # stage3 
+        x_c = self.context_branch_layers[0](x) # b*128*1/16h*1/16w
+        x_s = self.spatial_branch_layers[0](x) # b*64*1/8h*1/8w
+        comp_c = self.compression_1(self.relu(x_c)) # b*64*1/16h*1/16w
+        x_c += self.down_1(self.relu(x_s)) # b*128*1/16h*1/16w
+        x_s += resize( # b*64*1/8h*1/8w
             comp_c,
             size=out_size,
             mode='bilinear',
             align_corners=self.align_corners)
         if self.training:
             temp_context = x_s.clone()
-
         # stage4
-        x_c = self.context_branch_layers[1](self.relu(x_c))
-        x_s = self.spatial_branch_layers[1](self.relu(x_s))
-        comp_c = self.compression_2(self.relu(x_c))
-        x_c += self.down_2(self.relu(x_s))
-        x_s += resize(
+        x_c = self.context_branch_layers[1](self.relu(x_c)) # b*256*1/32h*1/32w
+        x_s = self.spatial_branch_layers[1](self.relu(x_s)) # b*64*1/8h*1/8w
+        comp_c = self.compression_2(self.relu(x_c)) # b*64*1/32h*1/32w
+        x_c += self.down_2(self.relu(x_s)) # b*256*1/32h*1/32w
+        x_s += resize( # b*64*1/8h*1/8w
             comp_c,
             size=out_size,
             mode='bilinear',
             align_corners=self.align_corners)
-
         # stage5
-        x_s = self.spatial_branch_layers[2](self.relu(x_s))
-        x_c = self.context_branch_layers[2](self.relu(x_c))
-        x_c = self.spp(x_c)
-        x_c = resize(
+        x_s = self.spatial_branch_layers[2](self.relu(x_s)) # b*128*1/8h*1/8w
+        x_c = self.context_branch_layers[2](self.relu(x_c)) # b*512*1/64h*1/64w
+        x_c = self.spp(x_c) # b*128*1/64h*1/64w
+        x_c = resize( # b*128*1/8h*1/8w
             x_c,
             size=out_size,
             mode='bilinear',

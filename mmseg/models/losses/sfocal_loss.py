@@ -192,7 +192,7 @@ class SFocalLoss(nn.Module):
                  alpha=0.6,
                  beta=1,
                  mi=2,
-                 exp_name='3',
+                 exp_name='4',
                  reduction='mean',
                  class_weight=None,
                  loss_weight=1.0,
