@@ -10,11 +10,16 @@ from .lovasz_loss import LovaszLoss
 from .ohem_cross_entropy_loss import OhemCrossEntropy
 from .tversky_loss import TverskyLoss
 from .utils import reduce_loss, weight_reduce_loss, weighted_loss
+from .focal_loss_exp import StrongerFocalLoss1, StrongerFocalLoss2, StrongerFocalLoss3, StrongerFocalLoss4
+from .sfocal_loss import SFocalLoss
+
 
 __all__ = [
     'accuracy', 'Accuracy', 'cross_entropy', 'binary_cross_entropy',
     'mask_cross_entropy', 'CrossEntropyLoss', 'reduce_loss',
     'weight_reduce_loss', 'weighted_loss', 'LovaszLoss', 'DiceLoss',
     'FocalLoss', 'TverskyLoss', 'OhemCrossEntropy', 'BoundaryLoss',
-    'HuasdorffDisstanceLoss'
+    'HuasdorffDisstanceLoss', 
+    'StrongerFocalLoss1', 'StrongerFocalLoss2', 'StrongerFocalLoss3', 'StrongerFocalLoss4',
+    'SFocalLoss'
 ]
