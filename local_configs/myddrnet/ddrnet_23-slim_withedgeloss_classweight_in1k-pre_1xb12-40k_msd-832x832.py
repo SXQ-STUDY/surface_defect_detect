@@ -6,7 +6,7 @@ _base_ = [
 # The class_weight is borrowed from https://github.com/openseg-group/OCNet.pytorch/issues/14 # noqa
 # Licensed under the MIT License
 class_weight = [
-    1.0, 1.0, 1.0, 1.0
+    0.7, 0.9, 1.5, 1.5
 ]
 checkpoint = 'https://download.openmmlab.com/mmsegmentation/v0.5/ddrnet/pretrain/ddrnet23s-in1kpre_3rdparty-1ccac5b1.pth'  # noqa
 crop_size = (832, 832)
@@ -50,19 +50,19 @@ model = dict(
                 thres=0.9,
                 min_kept=131072,
                 class_weight=class_weight,
-                loss_weight=0.4),
+                loss_weight=0.5),
             dict(
                 type='OhemCrossEntropy',
                 thres=0.9,
                 min_kept=131072,
                 class_weight=class_weight,
-                loss_weight=0.4),
+                loss_weight=2.0),
             dict(
                 type='OhemCrossEntropy',
                 thres=0.9,
                 min_kept=131072,
                 class_weight=class_weight,
-                loss_weight=0.4),
+                loss_weight=0.5),
         ]),
 
     # model training and testing settings
