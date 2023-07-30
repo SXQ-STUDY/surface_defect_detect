@@ -50,19 +50,19 @@ model = dict(
                 thres=0.9,
                 min_kept=131072,
                 class_weight=class_weight,
-                loss_weight=0.5),
+                loss_weight=0.4),
             dict(
                 type='OhemCrossEntropy',
                 thres=0.9,
                 min_kept=131072,
                 class_weight=class_weight,
-                loss_weight=2.0),
+                loss_weight=0.4),
             dict(
                 type='OhemCrossEntropy',
                 thres=0.9,
                 min_kept=131072,
                 class_weight=class_weight,
-                loss_weight=0.5),
+                loss_weight=0.4),
         ]),
 
     # model training and testing settings
