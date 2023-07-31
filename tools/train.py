@@ -4,7 +4,7 @@ import logging
 import os
 import os.path as osp
 
-os.environ["CUDA_VISIBLE_DEVICES"]='3'
+os.environ["CUDA_VISIBLE_DEVICES"]='4'
 
 from mmengine.config import Config, DictAction
 from mmengine.logging import print_log
@@ -57,6 +57,8 @@ def main():
     args = parse_args()
     args.config = r'local_configs\myddrnet\ddrnet_23-slim_withedgeloss_classweight_in1k-pre_1xb12-40k_msd-832x832.py'
     args.config = r'local_configs\myddrnet\ddrnet_23-slim_withedgeloss_withedgebranch_classweight_in1k-pre_1xb12-40k_msd-832x832.py'
+    args.config = r'local_configs\myddrnet\ddrnet_23-slim_withedgeloss_withedgebranch_in1k-pre_1xb12-40k_msd-1024x1024.py'
+    args.config = r'local_configs\myddrnet\ddrnet_23-slim_withedgeloss_withedgebranch_in1k-pre_1xb16-40k_msd-1024x1024-lr0.015.py'
 
     # load config
     cfg = Config.fromfile(args.config)

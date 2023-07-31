@@ -9,7 +9,7 @@ class_weight = [
     1.0, 1.0, 1.0, 1.0
 ]
 checkpoint = 'https://download.openmmlab.com/mmsegmentation/v0.5/ddrnet/pretrain/ddrnet23s-in1kpre_3rdparty-1ccac5b1.pth'  # noqa
-crop_size = (832, 832)
+crop_size = (1024, 1024)
 data_preprocessor = dict(
     type='SegDataPreProcessor',
     size=crop_size,
@@ -88,11 +88,11 @@ train_pipeline = [
 train_dataloader = dict(
     dataset=dict(pipeline=train_pipeline),
     batch_size=12, 
-    num_workers=6)
+    num_workers=8)
 
 iters = 40000
 # optimizer
-optimizer = dict(type='SGD', lr=0.01, momentum=0.9, weight_decay=0.0005)
+optimizer = dict(type='SGD', lr=0.015, momentum=0.9, weight_decay=0.0005)
 optim_wrapper = dict(type='OptimWrapper', optimizer=optimizer, clip_grad=None)
 # learning policy
 param_scheduler = [
