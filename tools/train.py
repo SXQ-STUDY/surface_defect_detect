@@ -55,7 +55,7 @@ def parse_args():
 
 def main():
     args = parse_args()
-    args.config = r'local_configs\myddrnet\ddrnet_23-slim_withedgeloss_withedgebranch_withPAPPM_in1k-pre_1xb16-40k_msd-1024x1024-lr0.015.py'
+    args.config = r'local_configs\myddrnet\ddrnet_23-slim_withedgeloss_withedgebranch_withhighlowfuse_in1k-pre_1xb16-40k_msd-1024x1024-lr0.015.py'
 
     # load config
     cfg = Config.fromfile(args.config)
