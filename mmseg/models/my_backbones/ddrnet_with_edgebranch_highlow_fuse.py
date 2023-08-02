@@ -296,7 +296,7 @@ class MyDDRNet_with_edgebranch_with_highlowfuse(BaseModule):
         x_s = self.spatial_branch_layers[0](x) # b*64*1/8h*1/8w
         if self.training:
             c1 = x_c.clone()
-            s1 = x_s.clone()
+        s1 = x_s.clone()
         comp_c = self.compression_1(self.relu(x_c)) # b*64*1/16h*1/16w
         x_c += self.down_1(self.relu(x_s)) # b*128*1/16h*1/16w
         x_s += resize( # b*64*1/8h*1/8w
@@ -306,7 +306,7 @@ class MyDDRNet_with_edgebranch_with_highlowfuse(BaseModule):
             align_corners=self.align_corners)
         if self.training:
             c2 = x_c.clone()
-            s2 = x_s.clone()
+        s2 = x_s.clone()
         # stage4
         x_c = self.context_branch_layers[1](self.relu(x_c)) # b*256*1/32h*1/32w
         x_s = self.spatial_branch_layers[1](self.relu(x_s)) # b*64*1/8h*1/8w
@@ -319,7 +319,7 @@ class MyDDRNet_with_edgebranch_with_highlowfuse(BaseModule):
             align_corners=self.align_corners)
         if self.training:
             c3 = x_c.clone()
-            s3 = x_s.clone()
+        s3 = x_s.clone()
         # stage5
         x_s = self.spatial_branch_layers[2](self.relu(x_s)) # b*128*1/8h*1/8w
         x_c = self.context_branch_layers[2](self.relu(x_c)) # b*512*1/64h*1/64w
