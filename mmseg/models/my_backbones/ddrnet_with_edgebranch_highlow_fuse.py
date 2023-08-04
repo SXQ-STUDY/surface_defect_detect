@@ -78,8 +78,8 @@ class High_Low_semantic_fusion(nn.Module):
 
     def fuse(self, x, y, z):
         cat_xyz = torch.cat([x, y, z], dim=1)
-        se_xyz = self.se_layer(cat_xyz)
-        return se_xyz
+        # se_xyz = self.se_layer(cat_xyz) 2
+        return cat_xyz
 
     def forward(self, x, y, z):
         x, y, z = self.prepare(x, y, z)
@@ -332,6 +332,6 @@ class MyDDRNet_with_edgebranch_with_highlowfuse(BaseModule):
         
         final_s = x_s + x_c
         out = self.hl_fuse(s2, s3, final_s)
-        out = self.edge_se_fuse(s1, out)
+        # out = self.edge_se_fuse(s1, out) 1 
 
         return (c1, s1, c2, s2, c3, s3, out) if self.training else out

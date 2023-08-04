@@ -4,7 +4,7 @@ import logging
 import os
 import os.path as osp
 
-os.environ["CUDA_VISIBLE_DEVICES"]='0'
+os.environ["CUDA_VISIBLE_DEVICES"]='1'
 
 from mmengine.config import Config, DictAction
 from mmengine.logging import print_log
